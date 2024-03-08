@@ -1,0 +1,40 @@
+@import './base.css';
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #55C2B1;
+
+}
+.logo{
+  width: 38%;
+  margin: auto;
+}
+.card {
+  width: 60rem;
+  box-shadow: 20px 20px 10px;
+  margin: auto;
+}
+
+#resultado {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.form-date {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
