@@ -4,7 +4,7 @@ O desafio encontrado foi com a API que nao retornava os valores que eu queria.
 Para resolver isso foi feito uma funcao chamada getDatesUntil onde ela recebe data e endDate 
 que retorna as datas dentro do intervalo de tempo selecionada.
 
-Framework utilziado foi o vue. js:
+Framework utilizado foi o vue. js:
 
 Vue.js tem um desempenho sólido, mesmo em aplicações robustas. Para um sistema de cotação de moedas, onde a velocidade e a responsividade são importantes, essa característica é importante para fornecer uma experiência de usuário fluida.
 
