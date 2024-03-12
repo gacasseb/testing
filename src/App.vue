@@ -1,11 +1,6 @@
 <script>
 import LineChart from "./components/LineChart.vue";
-import BarChart from "./components/BarChart.vue";
-import {
-  fetchDates,
-  getCategories,
-  getValues,
-} from "../src/helpers/fetchDates";
+import { fetchCurrency } from '../src/helpers/fetchCurrency';
 
 export default {
   head() {
@@ -14,30 +9,52 @@ export default {
     };
   },
   components: {
-    // LineChart,
-    BarChart,
     LineChart,
   },
   data() {
     return {
-      dates: [],
-      startDate: "",
-      endDate: "",
-      currency: "",
+      currency: "EUR",
+      prices: {
+        "BTC": [],
+        "USD": [],
+        "EUR": [],
+      },
+      timer: null,
     };
   },
 
-  // AQUI FICA AS FUNCOES QUE SAO FEITAS ASSIM QUE A PAGINA MONTA
-  mounted() {},
+  watch: {
+    currency() {
+      clearInterval(this.timer);
+      this.fetch();
+      this.timer = setInterval(() => {
+        this.fetch();
+      }, 30 * 1000);
+    },
+  },
 
-  // AQUI FICA AS FUNCOES DA PAGINA 2024-03-24
+  mounted() {
+    this.fetch();
+    this.startTimer();
+  },
+
   methods: {
     async fetch() {
-      this.dates = await fetchDates(
-        new Date(this.startDate),
-        new Date(this.endDate),
-        this.currency
-      );
+      const data = await fetchCurrency(this.currency);
+      if (!data) return;
+      let key = Object.keys(data)[0];
+      let arr = this.prices[this.currency];
+      arr.push(data[key].bid);
+      if (arr.length > 5) {
+        arr.shift();
+      }
+      this.prices = { ...this.prices, [this.currency]: arr };
+    },
+
+    startTimer() {
+      this.timer = setInterval(() => {
+        this.fetch();
+      }, 30 * 1000);
     },
   },
 };
@@ -58,26 +75,8 @@ export default {
           </select>
         </div>
         <div class="mb-3">
-          <form class="form-date">
-            <label for="data1">Data inicio:</label>
-            <input
-              v-model="startDate"
-              type="date"
-              id="data1"
-              name="data1"
-            /><br /><br />
-            <label for="data2">Data final:</label>
-            <input
-              v-model="endDate"
-              type="date"
-              id="data2"
-              name="data2"
-            /><br /><br />
-          </form>
-          <!-- <BarChart /> -->
-          <LineChart v-bind:data="dates" />
+          <LineChart v-bind:data="prices" v-bind:currency="currency" />
         </div>
-        <button class="btn btn-primary mt-1" @click="fetch()">Buscar</button>
       </div>
     </div>
   </div>

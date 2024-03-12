@@ -28,14 +28,14 @@ ChartJS.register(
 );
 
 export default {
-  props: ["data"],
+  props: ["data", "currency"],
   watch: {
     data(newValue) {
       this.chartData = Object.assign({}, this.chartData, {
-        labels: getCategories(newValue),
+        labels: [1, 2, 3, 4, 5],
         datasets: [
           {
-            data: getValues(newValue),
+            data: newValue[this.currency].map((price) => price),
           },
         ],
       });
